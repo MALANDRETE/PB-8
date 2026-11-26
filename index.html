@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08131e">
+<title>PUMP EARLY RADAR V3.2 — UNIT FIX + SELECTIVE FILTER</title>
+<style>
+:root{--bg:#08131e;--panel:#111f2c;--panel2:#192b3a;--line:#294052;--txt:#eaf2fa;--muted:#91a5b7;--green:#55dfb0;--red:#ff7182;--yellow:#f4c66b;--blue:#75baff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173344 0,#0b1a26 48%,#08131e 100%);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input,select{font:inherit}.wrap{max-width:1250px;margin:auto;padding:22px 16px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}.brand{font-weight:900;letter-spacing:1.5px;font-size:clamp(20px,4vw,30px)}.brand span,.symbol{color:var(--green)}.sub{color:var(--muted);letter-spacing:3px;font-size:12px;margin-top:7px}.status{border:1px solid var(--line);border-radius:30px;padding:12px 16px;color:var(--muted);white-space:nowrap;font-size:13px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-right:9px}.status.on .dot{background:var(--green);box-shadow:0 0 12px var(--green)}.status.connecting .dot{background:var(--yellow)}.panel{background:linear-gradient(145deg,#142635ee,#101d29ee);border:1px solid var(--line);border-radius:24px;padding:22px;margin-bottom:16px;box-shadow:0 12px 30px #0003}h1{font-size:clamp(23px,4vw,34px);margin:0 0 12px}h2{font-size:18px;letter-spacing:1px;margin:0}.desc{color:var(--muted);line-height:1.6;margin:0 0 18px}.actions{display:flex;flex-wrap:wrap;gap:10px}.btn{border:1px solid var(--line);border-radius:15px;background:#172938;color:var(--txt);padding:13px 17px;font-weight:800;cursor:pointer}.btn.primary{background:#0f594a;border-color:#22765f}.btn.danger{color:#ff9eaa}.btn:disabled{opacity:.45}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat{background:#111e2b;border:1px solid var(--line);border-radius:21px;padding:18px}.stat small{display:block;color:var(--muted);letter-spacing:1.4px;font-size:11px}.stat strong{display:block;font-size:clamp(25px,4vw,36px);margin-top:9px;font-variant-numeric:tabular-nums}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.muted,.count,.foot,.address,.scanreason,.meta,.tiny{color:var(--muted)}.count{font-size:13px}.feed,.scanlist{display:flex;flex-direction:column;gap:10px;max-height:850px;overflow:auto;padding-right:3px}.token{background:#192b3a;border:1px solid #30485b;border-radius:17px;padding:15px}.tokenhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tokenname{font-size:17px;font-weight:800;overflow-wrap:anywhere}.address{font-family:ui-monospace,monospace;font-size:12px;margin-top:7px;overflow-wrap:anywhere}.meta{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12px;margin-top:12px}.pill{display:inline-block;border:1px solid #35624f;background:#173d34;color:#9af0cb;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:800;white-space:nowrap}.pill.warn{border-color:#705d34;background:#3b3020;color:#f7d58d}.pill.bad{border-color:#713d4a;background:#3d202b;color:#ffabb5}.score{font-size:25px;font-weight:900;color:var(--green)}.score.low{color:var(--yellow)}.bar{height:7px;border-radius:10px;background:#263b4c;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#e8b95c,#55dfb0)}.scanrow{display:flex;justify-content:space-between;gap:12px;align-items:center}.scanname{font-weight:800;overflow-wrap:anywhere}.scanreason{font-size:12px;line-height:1.5;margin-top:8px}.empty{color:var(--muted);text-align:center;padding:28px 10px;border:1px dashed var(--line);border-radius:16px}.log{font-family:ui-monospace,monospace;color:#9bb0c1;font-size:11px;line-height:1.7;max-height:180px;overflow:auto}.foot{font-size:12px;line-height:1.6;margin-top:14px}.tag{font-size:10px;letter-spacing:1px;color:var(--blue);font-weight:800}.filter{width:100%;border:1px solid var(--line);border-radius:12px;background:#0e1b27;color:var(--txt);padding:12px;margin:0 0 12px}.tiny{font-size:11px}.detailbtn{width:100%;margin-top:13px;text-align:left;background:#102130;border:1px solid #365166;border-radius:12px;color:#cde0ee;padding:12px;font-weight:800;cursor:pointer}.detail{display:none;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}.detail.open{display:block}.detailgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.datum{background:#102130;border:1px solid #2b4355;border-radius:11px;padding:10px;min-width:0}.datum small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;margin-bottom:5px}.datum b{font-size:13px;overflow-wrap:anywhere;display:block}.detail h3{font-size:12px;letter-spacing:1px;color:var(--blue);margin:16px 0 9px}.detaillinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.detaillinks a{color:#9ccfff;text-decoration:none;border:1px solid #35536b;padding:8px 10px;border-radius:9px;font-size:12px}.classline{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.searchrow{display:flex;gap:8px}.searchrow input{flex:1;min-width:0}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.filters select{background:#0e1b27;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px}.footnote{background:#30291c;border:1px solid #66532e;color:#f1d99d;border-radius:13px;padding:12px;font-size:12px;line-height:1.5;margin-top:12px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.wrap{padding:18px 12px 45px}.panel{padding:18px}.top{align-items:flex-start}.status{padding:10px 12px;font-size:11px}}
+@media(max-width:430px){.brand{font-size:19px}.sub{letter-spacing:2px;font-size:10px}.stat{padding:15px}.btn{padding:12px 13px}.detailgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div><div class="brand">PUMP EARLY <span>RADAR</span></div><div class="sub">V3.2 · UNIT FIX · SELECTIVE FAST SCAN · SOLANA</div></div><div id="status" class="status"><i class="dot"></i><span id="statusText">DESCONECTADO</span></div></header>
+<section class="panel"><h1>Detector + fichas detalladas</h1><p class="desc">V3.2 corrige las unidades de compra inicial y aplica criterios de selección configurables. Cada token conserva su ficha detallada. El filtro solo prioriza eventos que cumplen todos los umbrales; no es auditoría ni señal de compra.</p><div class="actions"><button id="connect" class="btn primary">CONECTAR RADAR</button><button id="disconnect" class="btn">DESCONECTAR</button><button id="clear" class="btn danger">LIMPIAR FEED</button></div><p class="foot">Fuente: PumpPortal · WebSocket de nuevos tokens. La página debe permanecer abierta. GitHub Pages no mantiene el detector activo cuando cierras la página. Esta versión no compra ni vende.</p></section>
+<section class="stats">
+<div class="stat"><small>TOKENS RECIBIDOS</small><strong id="received">0</strong></div><div class="stat"><small>ÚNICOS</small><strong id="unique">0</strong></div><div class="stat"><small>ÚLTIMO MINUTO</small><strong id="minute">0</strong></div><div class="stat"><small>RITMO / SEGUNDO</small><strong id="rate">0.00</strong></div>
+</section><section class="stats">
+<div class="stat"><small>FAST SCAN COMPLETADOS</small><strong id="scanned">0</strong></div><div class="stat"><small>CANDIDATOS PRELIMINARES</small><strong id="candidates">0</strong></div><div class="stat"><small>OBSERVAR</small><strong id="observe">0</strong></div><div class="stat"><small>DESCARTAR DE LA COLA</small><strong id="discard">0</strong></div>
+</section><section class="stats">
+<div class="stat"><small>EVENTOS REPETIDOS</small><strong id="duplicates">0</strong></div><div class="stat"><small>TIEMPO MEDIO FAST SCAN</small><strong id="latency">—</strong></div><div class="stat"><small>DATOS COMPLETOS</small><strong id="complete">0</strong></div><div class="stat"><small>CONEXIÓN</small><strong id="connStat">OFF</strong></div>
+</section>
+<div class="grid">
+<section class="panel"><div class="sectionhead"><h2>FEED EN VIVO</h2><span class="count" id="feedCount">0 eventos</span></div><input id="search" class="filter" placeholder="Buscar por nombre, símbolo o dirección…"><div id="feed" class="feed"><div class="empty">Conecta el radar para recibir nuevos lanzamientos.</div></div></section>
+<section class="panel"><div class="sectionhead"><h2>FAST SCAN</h2><span class="tag">FILTRO SELECTIVO</span></div><p class="foot" style="margin-top:0">El filtro exige datos completos, compra inicial mínima en SOL, market cap dentro del rango y reservas válidas. Los umbrales se pueden ajustar. La clasificación solo evalúa el evento de creación: no comprueba holders, liquidez real, volumen posterior ni posibilidad de venta.</p><div class="filters"><label class="tiny">Compra inicial mínima (SOL) <input id="minSol" type="number" min="0" step="0.1" value="1" style="width:90px;background:#0e1b27;color:var(--txt);border:1px solid var(--line);border-radius:9px;padding:9px"></label><label class="tiny">Market cap máximo (SOL) <input id="maxMcap" type="number" min="1" step="5" value="250" style="width:95px;background:#0e1b27;color:var(--txt);border:1px solid var(--line);border-radius:9px;padding:9px"></label><select id="scanFilter"><option value="ALL">Todas las categorías</option><option value="CANDIDATO">Candidatos</option><option value="OBSERVAR">Observar</option><option value="DESCARTAR">Descartar de la cola</option><option value="CUARENTENA">Cuarentena</option></select><select id="sortFilter"><option value="NEW">Más recientes</option><option value="SCORE">Mayor completitud</option></select></div><div id="scans" class="scanlist"><div class="empty">Los análisis aparecerán aquí automáticamente.</div></div></section>
+</div>
+<section class="panel"><div class="sectionhead"><h2>REGISTRO DEL SISTEMA</h2><span class="count" id="uptime">Sesión: 00:00</span></div><div id="log" class="log">[RADAR] V3.2 UNIT FIX + SELECTIVE FILTER listo. Esperando conexión…</div><div class="footnote"><b>Importante:</b> CANDIDATO solo significa que el evento de creación pasó los umbrales configurados de datos y valores. No confirma seguridad ni rentabilidad. Todavía no se han verificado holders, liquidez real, volumen sostenido, concentración, autoridad del contrato, historial del creador ni posibilidad real de vender. No uses esta etiqueta como señal de compra.</div><div class="foot"><b>Privacidad y seguridad:</b> nunca introduzcas claves privadas ni frases semilla. Las fichas usan los datos del evento WebSocket; la URI de metadata se muestra como enlace, pero no se descarga automáticamente.</div></section>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+let ws=null,retryTimer=null,manualClose=false,startedAt=Date.now(),received=0,duplicates=0,scanned=0,scanMs=[],events=[],seen=new Set(),feedItems=[],scanItems=[],reconnectDelay=1500;
+const MAX_FEED=150,MAX_SCAN=150,URL='wss://pumpportal.fun/api/data';
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function log(msg){const el=$('log'),line=document.createElement('div');line.textContent='['+new Date().toLocaleTimeString('es-ES')+'] '+msg;el.prepend(line);while(el.children.length>80)el.lastChild.remove()}
+function setStatus(s){$('status').className='status '+(s==='CONECTADO'?'on':s==='CONECTANDO'?'connecting':'');$('statusText').textContent=s;$('connStat').textContent=s==='CONECTADO'?'ON':s==='CONECTANDO'?'…':'OFF'}
+function short(v){v=String(v||'');return v.length>17?v.slice(0,7)+'…'+v.slice(-6):v||'—'}
+function n(v){if(v===null||v===undefined||v==='')return null;const x=Number(v);return Number.isFinite(x)?x:null}
+function fmt(v,d=3){return v===null||v===undefined?'No informado':Number(v).toFixed(d)}
+function safeUrl(v){try{const u=new URL(v);return ['http:','https:'].includes(u.protocol)?u.href:null}catch{return null}}
+function normalize(raw){
+ let d=raw;if(typeof raw==='string'){try{d=JSON.parse(raw)}catch{return null}}if(!d||typeof d!=='object')return null;
+ const mint=d.mint||d.tokenAddress||d.address||d.ca||d.token?.mint;if(!mint)return null;
+ const tx=String(d.txType||d.type||'').toLowerCase();if(tx&&tx!=='create'&&!('initialBuy'in d)&&!('uri'in d)&&!('name'in d))return null;
+ // PumpPortal: initialBuy = cantidad de tokens; solAmount = SOL gastados.
+ return {mint:String(mint),name:d.name||d.tokenName||d.token?.name||'Token sin nombre',symbol:d.symbol||d.tokenSymbol||d.token?.symbol||'—',uri:d.uri||d.metadataUri||d.metadata_uri||'',initialBuyTokens:n(d.initialBuy??d.initial_buy),solAmount:n(d.solAmount??d.sol_amount),marketCapSol:n(d.marketCapSol??d.market_cap_sol),vSol:n(d.vSolInBondingCurve??d.vSol??d.virtualSolReserves),vTokens:n(d.vTokensInBondingCurve??d.vTokens??d.virtualTokenReserves),pool:d.pool||'',creator:d.traderPublicKey||d.creator||d.user||'',signature:d.signature||'',bondingCurve:d.bondingCurveKey||d.bondingCurve||'',at:Date.now(),raw:d};
+}
+function analyze(t){
+ const st=performance.now(),checks=[],missing=[];let score=0;
+ if(t.name&&t.name!=='Token sin nombre'&&t.name.length>=2){score+=10;checks.push('Nombre')}else missing.push('Nombre');
+ if(t.symbol&&t.symbol!=='—'){score+=10;checks.push('Símbolo')}else missing.push('Símbolo');
+ if(t.uri){score+=10;checks.push('URI metadata')}else missing.push('URI metadata');
+ if(t.initialBuyTokens!==null&&t.initialBuyTokens>0){score+=15;checks.push('Compra inicial en tokens')}else missing.push('Compra inicial en tokens');
+ if(t.solAmount!==null&&t.solAmount>=0){score+=20;checks.push('SOL gastados informados')}else missing.push('SOL gastados');
+ if(t.marketCapSol!==null&&t.marketCapSol>0){score+=15;checks.push('Market cap en SOL')}else missing.push('Market cap');
+ if(t.vSol!==null&&t.vSol>0){score+=10;checks.push('Reserva virtual SOL')}else missing.push('Reserva virtual SOL');
+ if(t.vTokens!==null&&t.vTokens>0){score+=10;checks.push('Reserva virtual tokens')}else missing.push('Reserva virtual tokens');
+ const minSol=Math.max(0,n($('minSol')?.value)??1),maxMcap=Math.max(1,n($('maxMcap')?.value)??250);
+ const hasCore=t.initialBuyTokens!==null&&t.initialBuyTokens>0&&t.solAmount!==null&&t.marketCapSol!==null&&t.vSol!==null&&t.vTokens!==null;
+ const numericValid=hasCore&&t.solAmount>=0&&t.marketCapSol>0&&t.vSol>0&&t.vTokens>0;
+ let status,reason,flags=[];
+ if(!numericValid){status='OBSERVAR';reason='Faltan campos esenciales o hay valores no válidos. No se asigna prioridad hasta recibir datos verificables.'}
+ else if(score<100){status='OBSERVAR';reason='Faltan uno o más campos descriptivos del evento. El filtro estricto exige ficha básica completa antes de dar prioridad.'}
+ else if(t.solAmount===0){status='OBSERVAR';reason='El evento no informa SOL gastados en la compra inicial; no se puede medir el tamaño de esa compra.'}
+ else if(t.solAmount<minSol){status='OBSERVAR';reason=`Compra inicial de ${fmt(t.solAmount)} SOL por debajo del mínimo configurado (${fmt(minSol)} SOL).`}
+ else if(t.marketCapSol>maxMcap){status='OBSERVAR';reason=`Market cap del evento (${fmt(t.marketCapSol)} SOL) supera el máximo configurado (${fmt(maxMcap)} SOL).`}
+ else if(t.marketCapSol<20){status='OBSERVAR';reason='Market cap del evento inferior al límite inferior preliminar de 20 SOL.'}
+ else if(t.vSol<30){status='OBSERVAR';reason='Reserva virtual SOL inferior a 30; requiere verificar el tipo de pool y el evento.'}
+ else {
+   // Consistency check for standard Pump bonding-curve events only.
+   if(String(t.pool).toLowerCase()==='pump'&&Math.abs(t.vSol-(30+t.solAmount))>1.5){status='CUARENTENA';flags.push('vSol no concuerda con 30 SOL + solAmount para pool pump');reason='Inconsistencia entre SOL gastados y reserva virtual. Se pone en cuarentena y no se considera candidato.'}
+   else {status='CANDIDATO';reason='Cumple los umbrales del evento: datos esenciales, compra inicial mínima, market cap dentro del rango y reservas positivas. Pendiente de análisis on-chain.'}
+ }
+ return {score,checks,missing,status,reason,numericValid,flags,minSol,maxMcap,elapsed:Math.max(0,performance.now()-st)};
+}
+function badge(status){return status==='CANDIDATO'?'pill':status==='OBSERVAR'?'pill warn':'pill bad'}
+function detailHTML(t,a){
+ const rows=[['Nombre',t.name],['Símbolo',t.symbol],['Mint / contrato',t.mint],['Detectado',new Date(t.at).toLocaleString('es-ES')],['Compra inicial (tokens)',t.initialBuyTokens===null?'No informado':fmt(t.initialBuyTokens,0)+' tokens'],['SOL gastados en compra inicial',t.solAmount===null?'No informado':fmt(t.solAmount)+' SOL'],['Pool informado',t.pool||'No informado'],['Market cap del evento',t.marketCapSol===null?'No informado':fmt(t.marketCapSol)+' SOL'],['Reserva virtual SOL',fmt(t.vSol)],['Reserva virtual tokens',fmt(t.vTokens)],['Creador / trader',t.creator||'No informado'],['Bonding curve',t.bondingCurve||'No informado'],['Firma',t.signature||'No informada']];
+ const meta=safeUrl(t.uri),explorer='https://solscan.io/token/'+encodeURIComponent(t.mint);
+ return `<div class="detailgrid">${rows.map(r=>`<div class="datum"><small>${esc(r[0])}</small><b>${esc(r[1])}</b></div>`).join('')}</div>
+ <h3>RESULTADO DEL FILTRO</h3><div class="classline"><span class="${badge(a.status)}">${a.status==='DESCARTAR'?'DESCARTAR DE LA COLA':a.status}</span><span class="pill warn">${a.score}/100 completitud</span></div><p class="scanreason">${esc(a.reason)}</p>
+ <h3>DATOS DISPONIBLES / FALTANTES</h3><p class="scanreason">Disponibles: ${esc(a.checks.join(' · ')||'Ninguno')}<br>Faltan: ${esc(a.missing.join(' · ')||'Ninguno')}</p>
+ <h3>RIESGOS NO VERIFICADOS</h3><p class="scanreason">Holders, liquidez real, volumen y presión compradora, concentración, autoridad del contrato, historial del creador y simulación de venta: <b>No verificados en esta versión.</b></p>
+ <div class="detaillinks"><a href="${explorer}" target="_blank" rel="noopener noreferrer">Ver token en Solscan ↗</a>${meta?`<a href="${esc(meta)}" target="_blank" rel="noopener noreferrer">Abrir metadata ↗</a>`:''}</div>`;
+}
+function renderFeed(){
+ const q=$('search').value.trim().toLowerCase(),items=feedItems.filter(t=>(t.name+' '+t.symbol+' '+t.mint).toLowerCase().includes(q));
+ $('feedCount').textContent=feedItems.length+' eventos';
+ if(!items.length){$('feed').innerHTML='<div class="empty">No hay eventos que coincidan con la búsqueda.</div>';return}
+ $('feed').innerHTML=items.map(t=>{const a=scanItems.find(x=>x.t.mint===t.mint)?.a;return `<article class="token"><div class="tokenhead"><div><div class="tokenname">${esc(t.name)} <span class="symbol">$${esc(t.symbol)}</span></div><div class="address">${esc(short(t.mint))}</div></div><span class="pill">RECIBIDO</span></div><div class="meta"><span>Detectado: ${new Date(t.at).toLocaleTimeString('es-ES')}</span><span>Evento: nuevo token</span><span>Compra inicial: ${t.solAmount===null?'SOL no informado':fmt(t.solAmount)+' SOL'}</span></div><button class="detailbtn" data-detail="${esc(t.mint)}">VER FICHA DETALLADA ${a?'· '+a.status:''} ▾</button><div class="detail" id="feed-detail-${esc(t.mint)}"></div></article>`}).join('');
+}
+function renderScans(){
+ let items=[...scanItems],f=$('scanFilter').value,s=$('sortFilter').value;if(f!=='ALL')items=items.filter(x=>x.a.status===f);if(s==='SCORE')items.sort((x,y)=>y.a.score-x.a.score);
+ if(!items.length){$('scans').innerHTML='<div class="empty">Todavía no hay tokens en esta categoría.</div>';return}
+ $('scans').innerHTML=items.map(x=>{const t=x.t,a=x.a;return `<article class="token"><div class="scanrow"><div><div class="scanname">${esc(t.name)} <span class="symbol">$${esc(t.symbol)}</span></div><div class="address">${esc(short(t.mint))}</div></div><div style="text-align:right"><div class="score ${a.score<75?'low':''}">${a.score}/100</div><div class="tiny">completitud</div></div></div><div class="bar"><i style="width:${a.score}%"></i></div><div class="classline"><span class="${badge(a.status)}">${a.status==='DESCARTAR'?'DESCARTAR DE LA COLA':a.status}</span><span class="tiny">${a.numericValid?'Métricas positivas recibidas':'Métricas incompletas o no positivas'}</span></div><div class="scanreason">${esc(a.reason)}</div><div class="meta"><span>FAST SCAN: ${fmt(a.elapsed,3)} ms (procesamiento local)</span><span>${new Date(t.at).toLocaleTimeString('es-ES')}</span></div><button class="detailbtn" data-detail="${esc(t.mint)}">ABRIR FICHA DETALLADA ▾</button><div class="detail" id="scan-detail-${esc(t.mint)}"></div></article>`}).join('');
+}
+function toggleDetail(btn){
+ const mint=btn.dataset.detail,box=btn.parentElement.querySelector('.detail');if(!box)return;
+ const was=box.classList.contains('open');document.querySelectorAll('.detail.open').forEach(x=>x.classList.remove('open'));
+ if(was)return;const item=scanItems.find(x=>x.t.mint===mint);if(!item)return;
+ box.innerHTML=detailHTML(item.t,item.a);box.classList.add('open');btn.textContent='CERRAR FICHA ▴';
+ document.querySelectorAll('.detailbtn').forEach(b=>{if(b!==btn)b.textContent=b.textContent.replace('CERRAR FICHA ▴','ABRIR FICHA DETALLADA ▾')});
+}
+function updateStats(){
+ const now=Date.now(),last=events.filter(x=>now-x<60000).length,rate=received/Math.max(1,(now-startedAt)/1000),cand=scanItems.filter(x=>x.a.status==='CANDIDATO').length,obs=scanItems.filter(x=>x.a.status==='OBSERVAR').length,disc=scanItems.filter(x=>x.a.status==='DESCARTAR'||x.a.status==='CUARENTENA').length,complete=scanItems.filter(x=>x.a.score===100).length;
+ $('received').textContent=received;$('unique').textContent=seen.size;$('minute').textContent=last;$('rate').textContent=rate.toFixed(2);$('scanned').textContent=scanned;$('candidates').textContent=cand;$('observe').textContent=obs;$('discard').textContent=disc;$('duplicates').textContent=duplicates;$('complete').textContent=complete;$('latency').textContent=scanMs.length?(scanMs.reduce((a,b)=>a+b,0)/scanMs.length).toFixed(3)+' ms':'—';
+ const sec=Math.floor((now-startedAt)/1000);$('uptime').textContent='Sesión: '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+}
+function onToken(t){
+ received++;events.push(Date.now());events=events.filter(x=>Date.now()-x<60000);
+ if(seen.has(t.mint)){duplicates++;updateStats();log('Evento repetido: '+short(t.mint));return}
+ seen.add(t.mint);const a=analyze(t);scanned++;scanMs.push(a.elapsed);if(scanMs.length>120)scanMs.shift();
+ feedItems.unshift(t);if(feedItems.length>MAX_FEED)feedItems.pop();scanItems.unshift({t,a});if(scanItems.length>MAX_SCAN)scanItems.pop();
+ renderFeed();renderScans();updateStats();log('Nuevo token: '+t.name+' ($'+t.symbol+') · '+a.status+' · initialBuy '+fmt(t.initialBuyTokens,0)+' tokens · solAmount '+fmt(t.solAmount)+' SOL');
+}
+function handleMessage(ev){let parsed;try{parsed=JSON.parse(ev.data)}catch{return}for(const d of (Array.isArray(parsed)?parsed:[parsed])){const t=normalize(d);if(t)onToken(t);else if(d&&d.message)log('Proveedor: '+d.message)}}
+function scheduleReconnect(){if(manualClose||retryTimer)return;setStatus('DESCONECTADO');const wait=reconnectDelay;log('Reintentando conexión en '+(wait/1000).toFixed(1)+' s');retryTimer=setTimeout(()=>{retryTimer=null;connect(true)},wait);reconnectDelay=Math.min(30000,reconnectDelay*1.8)}
+function connect(isRetry=false){
+ if(ws&&(ws.readyState===WebSocket.OPEN||ws.readyState===WebSocket.CONNECTING))return;manualClose=false;clearTimeout(retryTimer);retryTimer=null;setStatus('CONECTANDO');log(isRetry?'Reconectando con PumpPortal…':'Abriendo WebSocket con PumpPortal…');
+ try{ws=new WebSocket(URL);ws.onopen=()=>{reconnectDelay=1500;setStatus('CONECTADO');log('WebSocket conectado. Suscripción a nuevos tokens activa.');ws.send(JSON.stringify({method:'subscribeNewToken'}))};ws.onmessage=handleMessage;ws.onerror=()=>log('Error WebSocket; se verificará el cierre.');ws.onclose=()=>{ws=null;log('WebSocket cerrado.');if(!manualClose)scheduleReconnect();else setStatus('DESCONECTADO')}}catch(e){log('No se pudo abrir WebSocket: '+e.message);scheduleReconnect()}
+}
+function disconnect(){manualClose=true;clearTimeout(retryTimer);retryTimer=null;if(ws){const old=ws;ws=null;old.onclose=null;try{old.close()}catch{}}setStatus('DESCONECTADO');log('Desconexión solicitada por el usuario.')}
+$('connect').addEventListener('click',()=>connect(false));$('disconnect').addEventListener('click',disconnect);
+$('clear').addEventListener('click',()=>{feedItems=[];scanItems=[];seen.clear();received=duplicates=scanned=0;events=[];scanMs=[];startedAt=Date.now();renderFeed();renderScans();updateStats();log('Feed, resultados y contadores limpiados. La conexión no se modificó.')});
+$('search').addEventListener('input',renderFeed);$('scanFilter').addEventListener('change',renderScans);$('sortFilter').addEventListener('change',renderScans);$('minSol').addEventListener('change',()=>{scanItems=scanItems.map(x=>({t:x.t,a:analyze(x.t)}));renderScans();updateStats();log('Filtro recalculado. Compra inicial mínima: '+$('minSol').value+' SOL.')});$('maxMcap').addEventListener('change',()=>{scanItems=scanItems.map(x=>({t:x.t,a:analyze(x.t)}));renderScans();updateStats();log('Filtro recalculado. Market cap máximo: '+$('maxMcap').value+' SOL.')});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-detail]');if(b)toggleDetail(b)});
+setInterval(updateStats,1000);window.addEventListener('online',()=>{if(!manualClose&&(!ws||ws.readyState===WebSocket.CLOSED))connect(true)});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!manualClose&&(!ws||ws.readyState===WebSocket.CLOSED))connect(true)});
+updateStats();
+})();
+</script></body></html>
